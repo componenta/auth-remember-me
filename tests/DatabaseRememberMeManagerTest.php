@@ -69,11 +69,11 @@ final class DatabaseRememberMeManagerTest extends TestCase
         self::assertIsArray($row);
         $serialized = json_encode($row, JSON_THROW_ON_ERROR);
         self::assertStringNotContainsString(
-            $grant->credential->selector,
+            $grant->credential->selector(),
             $serialized,
         );
         self::assertStringNotContainsString(
-            $grant->credential->validator,
+            $grant->credential->validator(),
             $serialized,
         );
     }

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Componenta\Auth\RememberMe;
 
-final readonly class RememberMeCredential implements \Stringable
+final readonly class RememberMeCredential implements \JsonSerializable
 {
     private const int SELECTOR_BYTES = 16;
     private const int VALIDATOR_BYTES = 32;
 
     private function __construct(
         #[\SensitiveParameter]
-        public string $selector,
+        private string $selector,
         #[\SensitiveParameter]
-        public string $validator,
+        private string $validator,
     ) {
         if (
             preg_match('/\A[A-Za-z0-9_-]{22}\z/D', $this->selector) !== 1
@@ -56,10 +56,15 @@ final readonly class RememberMeCredential implements \Stringable
         );
     }
 
-    #[\Override]
-    public function __toString(): string
+
+    public function selector(): string
     {
-        return $this->toString();
+        return $this->selector;
+    }
+
+    public function validator(): string
+    {
+        return $this->validator;
     }
 
     public function toString(): string
@@ -71,6 +76,13 @@ final readonly class RememberMeCredential implements \Stringable
     public function __debugInfo(): array
     {
         return ['credential' => '[REDACTED]'];
+    }
+
+    /** @return array{credential: string} */
+    #[\Override]
+    public function jsonSerialize(): array
+    {
+        return $this->__debugInfo();
     }
 
     private static function encode(string $bytes): string

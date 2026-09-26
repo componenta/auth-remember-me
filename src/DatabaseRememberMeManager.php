@@ -282,7 +282,7 @@ final readonly class DatabaseRememberMeManager implements RememberMeManagerInter
     ): string {
         return hash(
             'sha256',
-            "componenta-auth-remember-selector-v1\0" . $credential->selector,
+            "componenta-auth-remember-selector-v1\0" . $credential->selector(),
         );
     }
 
@@ -293,9 +293,9 @@ final readonly class DatabaseRememberMeManager implements RememberMeManagerInter
         return hash(
             'sha256',
             "componenta-auth-remember-validator-v1\0"
-                . $credential->selector
+                . $credential->selector()
                 . "\0"
-                . $credential->validator,
+                . $credential->validator(),
         );
     }
 
