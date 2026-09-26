@@ -14,4 +14,5 @@ Security properties:
 - compromise revokes the remembered grant and all active sessions for the affected subject;
 - successor grants and newly issued sessions use request-scoped discard
   compensation until response publication succeeds;
-- remember-me evidence never claims MFA or phishing resistance.
+- remember-me evidence is marked only as a persistent_grant and never claims
+  possession-factor, MFA or phishing resistance.

@@ -14,7 +14,7 @@ final class RememberMeEvidence
     {
         return new AuthenticationEvidence(
             methods: ['remember_me'],
-            capabilities: ['possession', 'persistent_grant'],
+            capabilities: ['persistent_grant'],
         );
     }
 }

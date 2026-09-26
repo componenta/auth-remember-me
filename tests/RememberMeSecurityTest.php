@@ -90,7 +90,7 @@ final class RememberMeSecurityTest extends TestCase
         $identity = new RememberMeIdentityFixture($subject);
         $evidence = new AuthenticationEvidence(
             ['remember_me'],
-            ['possession', 'persistent_grant'],
+            ['persistent_grant'],
         );
         $grant = self::grant($subject, $sessionId, $evidence);
         $sessions = new RememberMeSessionManagerFixture($grant);
