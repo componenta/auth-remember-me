@@ -58,6 +58,8 @@ final class RememberMeSecurityTest extends TestCase
                     static fn(UuidInterface $id): bool =>
                         $id->equals($subject),
                 ),
+                null,
+                RevocationReason::CredentialCompromise,
             );
 
         $result = (new RememberMeStrategy(
@@ -216,6 +218,7 @@ final class RememberMeSessionManagerFixture implements
     public function revokeAll(
         UuidInterface $subjectId,
         ?UuidInterface $exceptSessionId = null,
+        RevocationReason $reason = RevocationReason::UserRequested,
     ): void {}
 
     public function isGrantCurrent(AuthSessionGrant $grant): bool

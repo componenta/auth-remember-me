@@ -45,7 +45,10 @@ final readonly class RememberMeStrategy implements AuthenticationStrategyInterfa
         $rotation = $this->remember->rotate($payload->credential);
 
         if ($rotation instanceof RememberMeCompromise) {
-            $this->sessions->revokeAll($rotation->subjectId);
+            $this->sessions->revokeAll(
+                $rotation->subjectId,
+                reason: RevocationReason::CredentialCompromise,
+            );
 
             return new AuthenticationResult(new InvalidCredentials());
         }
