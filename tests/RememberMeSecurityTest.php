@@ -95,11 +95,16 @@ final class RememberMeSecurityTest extends TestCase
         $grant = self::grant($subject, $sessionId, $evidence);
         $sessions = new RememberMeSessionManagerFixture($grant);
         $remember = new ThrowingBindRememberMeManagerFixture();
+        $provider = $this->createStub(IdentityProviderInterface::class);
+        $provider->method('findByUuid')->willReturn($identity);
+        $guard = $this->createStub(\Componenta\Auth\AuthenticationGuardInterface::class);
+        $guard->method('check')->willReturn(null);
         $issuer = new AuthenticatedSessionIssuer(
             $sessions,
             new FixedRememberMePolicyProviderFixture(
                 new AuthSessionPolicy(1800, 28800),
             ),
+            new \Componenta\Auth\AuthenticationAdmission($provider, $guard),
         );
         $transportState = new CredentialTransportState();
         $rotation = new RememberMeRotationState(

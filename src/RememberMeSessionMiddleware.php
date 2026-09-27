@@ -60,11 +60,28 @@ final readonly class RememberMeSessionMiddleware implements MiddlewareInterface
             );
         }
 
-        $grant = $this->issuer->issue(
-            $identity,
-            RememberMeEvidence::create(),
-            $this->metadata->extract($request),
-        );
+        try {
+            $grant = $this->issuer->issue(
+                $identity,
+                RememberMeEvidence::create(),
+                $this->metadata->extract($request),
+            );
+        } catch (\Throwable $exception) {
+            $this->remember->revokeRotation($rotation);
+            $transportState->discardQueued();
+            throw $exception;
+        }
+
+        if ($grant instanceof DeniedReasonInterface) {
+            $this->remember->revokeRotation($rotation);
+            $transportState->discardQueued();
+            return $handler->handle($request
+                ->withoutAttribute(IdentityInterface::class)
+                ->withoutAttribute(AuthSession::class)
+                ->withoutAttribute(AuthenticationStateInterface::class)
+                ->withoutAttribute(RememberMeRotationState::class)
+                ->withAttribute(DeniedReasonInterface::class, $grant));
+        }
 
         $transportState->onDiscard(
             function () use ($grant): void {
