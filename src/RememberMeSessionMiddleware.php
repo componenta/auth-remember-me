@@ -67,14 +67,24 @@ final readonly class RememberMeSessionMiddleware implements MiddlewareInterface
                 $this->metadata->extract($request),
             );
         } catch (\Throwable $exception) {
-            $this->remember->revokeRotation($rotation);
-            $transportState->discardQueued();
+            try {
+                $this->remember->revokeRotation($rotation);
+            } finally {
+                // Never publish a queued successor even when revocation fails.
+                $transportState->discardQueued();
+            }
+
             throw $exception;
         }
 
         if ($grant instanceof DeniedReasonInterface) {
-            $this->remember->revokeRotation($rotation);
-            $transportState->discardQueued();
+            try {
+                $this->remember->revokeRotation($rotation);
+            } finally {
+                // Never publish a queued successor even when revocation fails.
+                $transportState->discardQueued();
+            }
+
             return $handler->handle($request
                 ->withoutAttribute(IdentityInterface::class)
                 ->withoutAttribute(AuthSession::class)
