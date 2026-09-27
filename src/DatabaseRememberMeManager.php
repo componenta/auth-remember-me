@@ -230,7 +230,10 @@ final readonly class DatabaseRememberMeManager implements RememberMeManagerInter
         }
 
         $now = $this->format($this->now());
-        $rows = $this->database->select('selector_hash')
+        $rows = $this->database->select('selector_hash')->withDriver(
+                $this->database->getDriver(DatabaseInterface::WRITE),
+                $this->database->getPrefix(),
+            )
             ->from($this->table)
             ->where('expires_at', '<=', $now)
             ->limit($limit)
@@ -248,6 +251,7 @@ final readonly class DatabaseRememberMeManager implements RememberMeManagerInter
             ? 0
             : $this->database->delete($this->table)
                 ->where('selector_hash', 'IN', $hashes)
+                ->where('expires_at', '<=', $now)
                 ->run();
     }
 
@@ -267,7 +271,10 @@ final readonly class DatabaseRememberMeManager implements RememberMeManagerInter
     /** @return array<array-key, mixed>|null */
     private function row(string $selectorHash): ?array
     {
-        $row = $this->database->select()
+        $row = $this->database->select()->withDriver(
+                $this->database->getDriver(DatabaseInterface::WRITE),
+                $this->database->getPrefix(),
+            )
             ->from($this->table)
             ->where('selector_hash', $selectorHash)
             ->run()
