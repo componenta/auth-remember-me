@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Componenta\Auth\RememberMe;
 
 use Componenta\Auth\Http\CredentialResponseHeaders;
+use Componenta\Auth\Http\CredentialTransportState;
 use Componenta\Auth\Session\AuthSession;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -30,6 +31,11 @@ final readonly class RememberMeLogoutHandler implements RequestHandlerInterface
         #[\SensitiveParameter]
         ServerRequestInterface $request,
     ): ResponseInterface {
+        $state = $request->getAttribute(CredentialTransportState::class);
+        if ($state instanceof CredentialTransportState) {
+            $state->clear($this->transport);
+        }
+
         $session = $request->getAttribute(AuthSession::class);
         $payload = $this->transport->extract($request);
 

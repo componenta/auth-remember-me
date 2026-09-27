@@ -82,7 +82,6 @@ final class RememberMeLogoutHandlerTest extends TestCase
             ),
             evidence: new AuthenticationEvidence(['password']),
             credentialGeneration: 1,
-            createdAt: $now,
             authenticatedAt: $now,
             reauthenticatedAt: null,
             lastActiveAt: $now,

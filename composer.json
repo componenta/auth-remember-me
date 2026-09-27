@@ -5,12 +5,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "componenta/auth": "dev-auth-3",
-        "componenta/auth-http": "dev-main",
-        "componenta/auth-session": "dev-main",
-        "componenta/auth-session-http": "dev-main",
-        "componenta/clock": "^1.1.0",
-        "componenta/identity": "^1.0",
+        "componenta/auth": "^3.0",
+        "componenta/auth-http": "^1.0",
+        "componenta/auth-session": "^1.0",
+        "componenta/auth-session-http": "^1.0",
+        "componenta/identity": "^1.0.1",
         "cycle/database": "^2.22",
         "psr/clock": "^1.0",
         "psr/http-message": "^2.0",
@@ -18,6 +17,8 @@
         "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
+        "componenta/auth-session-database": "^1.0",
+        "componenta/clock": "^1.1.0",
         "nyholm/psr7": "^1.8",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0"
@@ -33,12 +34,28 @@
         }
     },
     "repositories": [
-        {"type": "vcs", "url": "https://github.com/componenta/auth.git"},
-        {"type": "vcs", "url": "https://github.com/componenta/auth-http.git"},
-        {"type": "vcs", "url": "https://github.com/componenta/auth-session.git"},
-        {"type": "vcs", "url": "https://github.com/componenta/auth-session-http.git"}
+        {
+            "type": "vcs",
+            "url": "https://github.com/componenta/auth-session-database.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/componenta/auth.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/componenta/auth-http.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/componenta/auth-session.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/componenta/auth-session-http.git"
+        }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
@@ -51,6 +68,9 @@
     "scripts": {
         "test": "@php vendor/bin/phpunit --configuration phpunit.xml.dist",
         "phpstan": "@php vendor/bin/phpstan analyse src --level=max",
-        "check": ["@phpstan", "@test"]
+        "check": [
+            "@phpstan",
+            "@test"
+        ]
     }
 }

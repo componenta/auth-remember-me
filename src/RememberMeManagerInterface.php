@@ -26,6 +26,7 @@ interface RememberMeManagerInterface
 
     public function revokeRotation(RememberMeRotationState $rotation): void;
 
+    /** Revoke this stable grant, including successors of the presented bearer. */
     public function revokeCredential(
         #[\SensitiveParameter]
         RememberMeCredential $credential,

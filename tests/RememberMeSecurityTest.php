@@ -158,7 +158,6 @@ final class RememberMeSecurityTest extends TestCase
                 subjectId: $subjectId,
                 evidence: $evidence,
                 credentialGeneration: 1,
-                createdAt: $now,
                 authenticatedAt: $now,
                 reauthenticatedAt: null,
                 lastActiveAt: $now,

@@ -193,7 +193,6 @@ final readonly class DatabaseRememberMeManager implements RememberMeManagerInter
     ): void {
         $this->database->delete($this->table)
             ->where('selector_hash', self::selectorHash($credential))
-            ->where('verifier_hash', self::verifierHash($credential))
             ->run();
     }
 
