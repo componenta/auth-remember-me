@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.0.0 (2026-10-10)
+## v2.0.0 — coordinated session-http 2 / CSRF v3 migration (2026-10-10)
 
 ### Dependency compatibility
 - Require `componenta/auth-session-http ^2.0.1` instead of ^1.0.
