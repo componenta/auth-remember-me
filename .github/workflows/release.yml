@@ -50,8 +50,9 @@ jobs:
         run: |
           set -euo pipefail
           first_line="${COMMIT_MESSAGE%%$'\n'*}"
-          tag="${first_line#Release }"
-          if ! [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          if [[ "$first_line" =~ ^Release[[:space:]](v[0-9]+\.[0-9]+\.[0-9]+)(:[[:space:]].*)?$ ]]; then
+            tag="${BASH_REMATCH[1]}"
+          else
             echo "Invalid release tag" >&2
             exit 1
           fi
